@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Side API Practicum — Practice API Calls (Accessible)</title>
+  <meta name="description" content="A hands-on, accessible playground for practicing API calls — examples, best practices, and step-by-step exercises." />
+  <meta name="author" content="Side API Practicum" />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=" >
+
+  <!-- Minimal, professional typography & responsive layout -->
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa4b2;
+      --accent:#06b6d4; /* teal */
+      --accent-2:#7c3aed; /* purple */
+      --text:#e6eef6;
+      --radius:12px;
+      --max-width:1100px;
+      --content-padding:24px;
+      --focus: 3px solid color-mix(in srgb, var(--accent) 40%, white 60%);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:linear-gradient(180deg,#071428 0%, #071c2b 60%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:32px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+    }
+
+    a{color:var(--accent); text-decoration:none}
+    a:focus{outline:var(--focus); border-radius:6px}
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:24px;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .logo{
+      width:48px;
+      height:48px;
+      border-radius:10px;
+      display:inline-grid;
+      place-items:center;
+      font-weight:700;
+      color:#04202a;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 18px rgba(124,58,237,0.12);
+    }
+
+    h1{margin:0;font-size:clamp(1.35rem, 2.1vw, 2rem)}
+    p.lead{margin:8px 0 0;color:var(--muted)}
+
+    nav .btn{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+    }
+    nav .btn.primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#021018;
+      border:none;
+    }
+
+    main{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      border-radius:var(--radius);
+      padding:var(--content-padding);
+      box-shadow:0 8px 30px rgba(2,6,23,0.6);
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      padding:20px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .cta{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .feature{
+      padding:14px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    pre{
+      margin:0;
+      background:#021420;
+      color:#d6f8ff;
+      padding:12px;
+      border-radius:8px;
+      overflow:auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:0.95rem;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .meta{
+      display:flex;
+      gap:10px;
+      color:var(--muted);
+      font-size:0.9rem;
+      align-items:center;
+      margin-top:8px;
+    }
+
+    footer{
+      margin-top:20px;
+      color:var(--muted);
+      font-size:0.9rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .features{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      body{padding:18px}
+      .features{grid-template-columns:1fr}
+    }
+
+    /* Focus styles for keyboard users */
+    button:focus, .card:focus-within, a:focus{
+      outline:var(--focus);
+      outline-offset:3px;
+    }
+
+    /* Skip link */
+    .skip{
+      position:absolute;
+      left:-999px;
+      top:auto;
+      width:1px;
+      height:1px;
+      overflow:hidden;
+    }
+    .skip:focus{
+      left:16px;
+      top:16px;
+      width:auto;
+      height:auto;
+      background:#fff;
+      color:#000;
+      padding:8px 12px;
+      border-radius:6px;
+      z-index:9999;
+    }
+
+    .response-preview{
+      margin-top:12px;
+      border-radius:8px;
+      padding:12px;
+      background:linear-gradient(90deg, rgba(6,182,212,0.04), rgba(124,58,237,0.03));
+      border:1px dashed rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="container" role="application" aria-labelledby="brand-heading">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">S</div>
+        <div>
+          <div id="brand-heading" style="font-weight:700">Side API Practicum</div>
+          <div style="font-size:0.9rem;color:var(--muted)">Practice API calls · Learn real integrations · Accessible by design</div>
+        </div>
+      </div>
+
+      <nav aria-label="Primary actions">
+        <a class="btn" href="https://github.com/5idesfi5ales/sideapiprac" target="_blank" rel="noopener noreferrer">View repo</a>
+        <a class="btn primary" href="#try">Try an example</a>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1" class="card" aria-live="polite">
+      <section class="hero" aria-label="Landing">
+        <div>
+          <h1>Hands‑on API practice — learn by doing</h1>
+          <p class="lead">We built an approachable, accessible playground for practicing API requests, inspecting responses, and improving your integration skills. Perfect for beginners and experienced devs who want a safe place to experiment.</p>
+
+          <div class="cta" role="group" aria-label="Calls to action">
+            <a class="btn primary" href="#examples">Try an example</a>
+            <a class="btn" href="#how">How it works</a>
+          </div>
+
+          <div class="features" aria-hidden="false">
+            <div class="feature">
+              <strong>Interactive examples</strong>
+              <div class="meta">Prebuilt cURL, Fetch, and Python examples you can run and modify.</div>
+            </div>
+            <div class="feature">
+              <strong>Accessible by design</strong>
+              <div class="meta">Semantic HTML, keyboard navigation, strong contrast, and screen-reader friendly patterns.</div>
+            </div>
+            <div class="feature">
+              <strong>Real‑world patterns</strong>
+              <div class="meta">Auth, pagination, error handling, and retries — explained and demonstrated.</div>
+            </div>
+          </div>
+
+          <section id="how" style="margin-top:18px">
+            <h2 style="font-size:1.05rem;margin-bottom:6px">How we practice</h2>
+            <ol style="color:var(--muted);padding-left:20px">
+              <li>Read a short recipe: what the API does and the expected inputs/outputs.</li>
+              <li>Run a safe example (cURL / JS / Python) against a sandbox or local mock.</li>
+              <li>Inspect the JSON response and map it to UI or logic.</li>
+              <li>Tweak parameters — pagination, filters, auth — and iterate.</li>
+            </ol>
+          </section>
+        </div>
+
+        <aside aria-label="Example code and response" class="card" style="height:100%">
+          <h3 style="margin-top:0">Try this — GET entries</h3>
+          <p class="meta">Example: request a list of items from a sample API (replace <code>YOUR_API_KEY</code>)</p>
+
+          <div style="margin-top:8px">
+            <label style="display:block;font-weight:600;margin-bottom:6px">cURL</label>
+            <pre aria-label="cURL example">
+curl -s -X GET "https://api.example.com/v1/entries" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+            </pre>
+          </div>
+
+          <div style="margin-top:12px">
+            <label style="display:block;font-weight:600;margin-bottom:6px">Fetch (browser)</label>
+            <pre aria-label="Fetch example">
+fetch("https://api.example.com/v1/entries", {
+  headers: { "Authorization": "Bearer YOUR_API_KEY", "Accept":"application/json" }
+})
+  .then(r =&gt; r.json())
+  .then(data =&gt; console.log(data))
+            </pre>
+          </div>
+
+          <div style="margin-top:12px">
+            <label style="display:block;font-weight:600;margin-bottom:6px">Python (requests)</label>
+            <pre aria-label="Python example">
+import requests
+resp = requests.get(
+  "https://api.example.com/v1/entries",
+  headers={"Authorization":"Bearer YOUR_API_KEY","Accept":"application/json"}
+)
+print(resp.json())
+            </pre>
+          </div>
+
+          <div id="try" class="response-preview" role="status" aria-live="polite">
+            Response preview: {"items":[{"id":1,"title":"Example entry","summary":"A safe sandbox response."}]}
+          </div>
+        </aside>
+      </section>
+
+      <section id="examples" style="margin-top:18px">
+        <h2 style="margin-bottom:6px">What you'll learn</h2>
+        <ul style="color:var(--muted);padding-left:20px">
+          <li>Authentication patterns (API keys, bearer tokens, OAuth basics)</li>
+          <li>Pagination and rate-limiting techniques</li>
+          <li>Graceful error handling and retry strategies</li>
+          <li>Parsing JSON and mapping responses into app state</li>
+        </ul>
+      </section>
+
+      <section style="margin-top:18px">
+        <h2 style="margin-bottom:6px">Accessibility & best practices</h2>
+        <p style="color:var(--muted)">This landing page and the practicum prioritize:</p>
+        <ul style="color:var(--muted);padding-left:20px">
+          <li>Landmark roles and semantic headings for screen readers</li>
+          <li>High color contrast and visible focus states for keyboard users</li>
+          <li>ARIA live regions for dynamic response previews</li>
+          <li>Clear code examples and pragmatic explanations</li>
+        </ul>
+      </section>
+
+      <footer>
+        <div>Built by the Side API Practicum team — <a href="https://github.com/5idesfi5ales/sideapiprac" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
+        <div style="color:var(--muted)">Need a custom exercise? <a href="mailto:hello@example.com">Contact us</a></div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Small inline script to show keyboard accessibility tip (non-essential) -->
+  <script>
+    // Add a small enhancement: move focus to main when "Try an example" is clicked for keyboard/screen-reader users.
+    document.querySelectorAll('a[href="#try"]').forEach(function(el){
+      el.addEventListener('click', function(e){
+        var target = document.getElementById('try');
+        if(target){
+          e.preventDefault();
+          target.focus({preventScroll:false});
+          location.hash = 'try';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
