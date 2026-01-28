@@ -1,12 +1,14 @@
 from flask import Flask, send_from_directory, jsonify, request
+from flask_cors import CORS
 import os
 
-app = Flask(__name__, static_folder='.', template_folder='.')
+app = Flask(__name__, static_folder='docs', template_folder='docs')
+CORS(app)
 
 @app.route('/')
 def home():
-    # Serve the landing page (index.html placed at repo root)
-    return send_from_directory('.', 'index.html')
+    # Serve the landing page from docs/
+    return send_from_directory('docs', 'index.html')
 
 @app.route('/api/v1/entries', methods=['GET'])
 def entries():
@@ -18,11 +20,11 @@ def entries():
     """
     try:
         page = int(request.args.get('page', 1))
-    except ValueError:
+    except (ValueError, TypeError):
         page = 1
     try:
         size = int(request.args.get('size', 10))
-    except ValueError:
+    except (ValueError, TypeError):
         size = 10
 
     # Keep size within reasonable bounds in the mock
