@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airtable Bridge</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#0d0d0d] min-h-screen">
+  <div class="p-8 max-w-6xl mx-auto space-y-8">
+    <h2 class="text-2xl font-bold text-white tracking-tight mb-4">Airtable Bridge</h2>
+    <form id="createForm" class="bg-[#111] rounded-2xl border border-white/10 p-6 mb-8 flex gap-4 items-end">
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Name</label>
+        <input id="nameInput" class="bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:ring-2 ring-indigo-500/20" />
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-1">Mail</label>
+        <input id="mailInput" class="bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:ring-2 ring-indigo-500/20" />
+      </div>
+      <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-6 rounded-xl transition-all">Add Record</button>
+    </form>
+    <div id="recordsBox" class="bg-[#111] rounded-2xl border border-white/10 p-8 text-emerald-400 text-xs whitespace-pre-wrap">Loading records...</div>
+  </div>
+  <script>
+    async function fetchAirtable() {
+      const res = await fetch('/airtable-data');
+      const data = await res.json();
+      renderRecords(data.records || []);
+    }
+    function renderRecords(records) {
+      const box = document.getElementById('recordsBox');
+      if (!records.length) {
+        box.innerHTML = '<span class="text-gray-400">No records found.</span>';
+        return;
+      }
+      box.innerHTML = records.map(r => `
+        <div class="flex items-center gap-4 mb-2">
+          <span class="flex-1">${r.fields.name || ''} &lt;${r.fields.mail || ''}&gt;</span>
+          <button onclick="editRecord('${r.id}', '${r.fields.name || ''}', '${r.fields.mail || ''}')" class="text-xs text-indigo-400 hover:underline">Edit</button>
+          <button onclick="deleteRecord('${r.id}')" class="text-xs text-red-400 hover:underline">Delete</button>
+        </div>
+      `).join('');
+    }
+    document.getElementById('createForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('nameInput').value;
+      const mail = document.getElementById('mailInput').value;
+      await fetch('/airtable-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, mail })
+      });
+      document.getElementById('nameInput').value = '';
+      document.getElementById('mailInput').value = '';
+      fetchAirtable();
+    };
+    window.deleteRecord = async function(id) {
+      await fetch('/airtable-data/' + id, { method: 'DELETE' });
+      fetchAirtable();
+    };
+    window.editRecord = function(id, name, mail) {
+      const newName = prompt('Edit name:', name);
+      const newMail = prompt('Edit mail:', mail);
+      if (newName !== null && newMail !== null) {
+        fetch('/airtable-data/' + id, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: newName, mail: newMail })
+        }).then(fetchAirtable);
+      }
+    };
+    fetchAirtable();
+  </script>
+</body>
+</html>

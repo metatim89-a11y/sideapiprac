@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Builder</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#0d0d0d] min-h-screen">
+  <div class="p-8 max-w-6xl mx-auto space-y-8">
+    <h2 class="text-2xl font-bold text-white tracking-tight mb-4">API Builder</h2>
+    <form id="apiForm" class="bg-[#111] rounded-2xl border border-white/10 p-8 space-y-6">
+      <div class="flex gap-4 mb-4">
+        <select id="method" class="bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-2 text-sm font-bold text-indigo-400 outline-none focus:ring-2 ring-indigo-500/20">
+          <option>GET</option>
+          <option>POST</option>
+          <option>PUT</option>
+          <option>PATCH</option>
+          <option>DELETE</option>
+        </select>
+        <input id="endpoint" type="text" value="/api/v1/entries" class="flex-1 bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 ring-indigo-500/20" placeholder="Endpoint (e.g. /api/v1/entries)" />
+      </div>
+      <div>
+        <label class="block text-xs text-gray-400 mb-2">Headers (JSON)</label>
+        <textarea id="headers" class="w-full h-20 bg-[#070707] border border-white/10 rounded-xl p-4 text-xs code-font text-emerald-400 outline-none resize-none focus:ring-2 ring-indigo-500/20 transition-all" placeholder='{"Content-Type": "application/json"}'>
+{"Content-Type": "application/json"}
+        </textarea>
+      </div>
+      <div id="bodyDiv">
+        <label class="block text-xs text-gray-400 mb-2">Body (JSON)</label>
+        <textarea id="body" class="w-full h-40 bg-[#070707] border border-white/10 rounded-xl p-4 text-xs code-font text-emerald-400 outline-none resize-none focus:ring-2 ring-indigo-500/20 transition-all" placeholder='{"name": "Alex", "role": "Engineer"}'>
+{
+  "name": "Alex",
+  "role": "Engineer"
+}
+        </textarea>
+      </div>
+      <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group">
+        Test API
+      </button>
+    </form>
+    <div id="responseBox" class="bg-[#111] rounded-2xl border border-white/10 p-8 mt-6 text-emerald-400 text-xs whitespace-pre-wrap" style="display:none;"></div>
+  </div>
+  <script>
+    const apiForm = document.getElementById('apiForm');
+    const method = document.getElementById('method');
+    const endpoint = document.getElementById('endpoint');
+    const headers = document.getElementById('headers');
+    const bodyDiv = document.getElementById('bodyDiv');
+    const body = document.getElementById('body');
+    const responseBox = document.getElementById('responseBox');
+    method.addEventListener('change', () => {
+      bodyDiv.style.display = method.value === 'GET' ? 'none' : 'block';
+    });
+    apiForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      responseBox.style.display = 'block';
+      responseBox.textContent = 'Loading...';
+      let url = endpoint.value.startsWith('http') ? endpoint.value : window.location.origin + endpoint.value;
+      let opts = {
+        method: method.value,
+        headers: {},
+      };
+      try {
+        opts.headers = JSON.parse(headers.value);
+      } catch {
+        responseBox.textContent = 'Invalid headers JSON';
+        return;
+      }
+      if (method.value !== 'GET') {
+        try {
+          opts.body = JSON.stringify(JSON.parse(body.value));
+        } catch {
+          responseBox.textContent = 'Invalid body JSON';
+          return;
+        }
+      }
+      try {
+        const res = await fetch(url, opts);
+        const text = await res.text();
+        responseBox.textContent = text;
+      } catch (err) {
+        responseBox.textContent = 'Request failed: ' + err;
+      }
+    });
+    bodyDiv.style.display = method.value === 'GET' ? 'none' : 'block';
+  </script>
+</body>
+</html>

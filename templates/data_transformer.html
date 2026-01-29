@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Transformer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#0d0d0d] min-h-screen">
+  <div class="p-8 max-w-7xl mx-auto space-y-6">
+    <h2 class="text-2xl font-bold text-white tracking-tight mb-4">Data Alchemist</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="space-y-4">
+        <div class="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-widest">Source JSON</div>
+        <textarea id="source" class="w-full h-[300px] bg-[#111] border border-white/10 rounded-2xl p-6 code-font text-xs text-sky-400 outline-none focus:ring-2 ring-indigo-500/20"></textarea>
+      </div>
+      <div class="space-y-4">
+        <div class="flex items-center gap-2 text-xs font-bold text-indigo-400 uppercase tracking-widest">Mapping Logic (JS)</div>
+        <textarea id="mapping" class="w-full h-[300px] bg-[#111] border border-white/10 rounded-2xl p-6 code-font text-xs text-amber-400 outline-none focus:ring-2 ring-indigo-500/20"></textarea>
+      </div>
+      <div class="space-y-4">
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-widest">Transformation Result</div>
+        <div id="outputBox" class="w-full h-[300px] bg-[#070707] border border-white/10 rounded-2xl p-6 overflow-auto text-emerald-400 text-xs"></div>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-4">
+      <button id="runBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-indigo-600/20">Run Transformation</button>
+    </div>
+  </div>
+  <script>
+    document.getElementById('source').value = '{\n  "raw_data": {\n    "user_id": 102,\n    "user_full_name": "Sarah Connor",\n    "meta": {\n      "last_login": "2023-10-05T14:48:00Z",\n      "tags": ["vip", "early_adopter"]\n    }\n  }\n}';
+    document.getElementById('mapping').value = '(input) => {\n  return {\n    id: input.raw_data.user_id,\n    name: input.raw_data.user_full_name,\n    isVip: input.raw_data.meta.tags.includes(\'vip\')\n  };\n}';
+    document.getElementById('runBtn').onclick = function() {
+      const source = document.getElementById('source').value;
+      const mapping = document.getElementById('mapping').value;
+      const outputBox = document.getElementById('outputBox');
+      try {
+        const input = JSON.parse(source);
+        // eslint-disable-next-line no-eval
+        const fn = eval(mapping);
+        const result = fn(input);
+        outputBox.textContent = JSON.stringify(result, null, 2);
+      } catch (e) {
+        outputBox.textContent = 'Error: ' + e.message;
+      }
+    };
+  </script>
+</body>
+</html>

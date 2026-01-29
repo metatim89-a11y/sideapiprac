@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#0d0d0d] min-h-screen">
+  <div class="p-8 max-w-6xl mx-auto space-y-12">
+    <div class="space-y-4">
+      <h2 class="text-3xl font-bold text-white">Knowledge Base</h2>
+      <p class="text-gray-500">Accelerate your understanding of modern backend architecture.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-[#111] border border-white/10 rounded-3xl overflow-hidden group hover:border-white/20 transition-all shadow-xl">
+        <div class="h-2 bg-indigo-500/50"></div>
+        <div class="p-8">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-6">
+            <span class="text-indigo-400 font-bold text-2xl">A</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-6 tracking-tight">API Fundamentals</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">REST vs GraphQL</span>
+            </div>
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">HTTP Methods Deep Dive</span>
+            </div>
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">Status Codes Mastery</span>
+            </div>
+          </div>
+        </div>
+        <div class="px-8 pb-8">
+          <button class="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-bold uppercase tracking-widest text-gray-300 hover:bg-white/10 transition-colors">Start Track</button>
+        </div>
+      </div>
+      <div class="bg-[#111] border border-white/10 rounded-3xl overflow-hidden group hover:border-white/20 transition-all shadow-xl">
+        <div class="h-2 bg-emerald-500/50"></div>
+        <div class="p-8">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6">
+            <span class="text-emerald-400 font-bold text-2xl">G</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-6 tracking-tight">GitBash Server Ops</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">Hosting with Node/Express</span>
+            </div>
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">Local Tunneling with ngrok</span>
+            </div>
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">Shell Scripting APIs</span>
+            </div>
+          </div>
+        </div>
+        <div class="px-8 pb-8">
+          <button class="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-bold uppercase tracking-widest text-gray-300 hover:bg-white/10 transition-colors">Start Track</button>
+        </div>
+      </div>
+      <div class="bg-[#111] border border-white/10 rounded-3xl overflow-hidden group hover:border-white/20 transition-all shadow-xl">
+        <div class="h-2 bg-amber-500/50"></div>
+        <div class="p-8">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-6">
+            <span class="text-amber-400 font-bold text-2xl">W</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-6 tracking-tight">Webhooks & Events</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">Event Driven Architecture</span>
+            </div>
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">Idempotency in Webhooks</span>
+            </div>
+            <div class="flex items-center justify-between group/item cursor-pointer">
+              <span class="text-sm text-gray-400 group-hover/item:text-white transition-colors">Debugging Payloads</span>
+            </div>
+          </div>
+        </div>
+        <div class="px-8 pb-8">
+          <button class="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-bold uppercase tracking-widest text-gray-300 hover:bg-white/10 transition-colors">Start Track</button>
+        </div>
+      </div>
+    </div>
+    <div class="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-3xl p-12 text-white relative overflow-hidden shadow-2xl">
+      <div class="absolute top-0 right-0 p-12 opacity-10">
+        <span class="text-6xl font-bold">📚</span>
+      </div>
+      <div class="relative z-10 max-w-2xl">
+        <h3 class="text-3xl font-bold mb-6">Interactive Exercise: GitBash to Airtable</h3>
+        <p class="text-indigo-100 mb-8 text-lg leading-relaxed">
+          Practice building a route that accepts a Webhook from Github, parses the commit message using our Transformer, and logs it to an Airtable base.
+        </p>
+        <div class="flex gap-4">
+          <button class="bg-white text-indigo-600 px-8 py-3 rounded-xl font-bold hover:shadow-xl transition-all">View Project Guide</button>
+          <button class="bg-indigo-500/30 backdrop-blur-md text-white border border-white/20 px-8 py-3 rounded-xl font-bold hover:bg-indigo-500/40 transition-all">Download Starter Code</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webhook Forge</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#0d0d0d] min-h-screen">
+  <div class="p-8 max-w-6xl mx-auto space-y-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">Webhook Forge</h2>
+        <p class="text-gray-500 text-sm">Create and test incoming push notifications from third-party services.</p>
+      </div>
+      <button class="bg-white text-black px-6 py-2.5 rounded-xl font-bold hover:bg-gray-200 transition-colors">
+        Generate New Webhook URL
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-[#111] border border-white/10 rounded-2xl p-6 hover:border-indigo-500/40 transition-all cursor-pointer group shadow-lg">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-indigo-500/20 text-indigo-400">
+            <span class="font-bold text-lg">W</span>
+          </div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Active</span>
+        </div>
+        <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">Github Commit</h3>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500 font-medium">
+          <span>3 mins ago</span>
+          <span>12 events</span>
+        </div>
+      </div>
+      <div class="bg-[#111] border border-white/10 rounded-2xl p-6 hover:border-indigo-500/40 transition-all cursor-pointer group shadow-lg">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-indigo-500/20 text-indigo-400">
+            <span class="font-bold text-lg">W</span>
+          </div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Active</span>
+        </div>
+        <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">Stripe Payment</h3>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500 font-medium">
+          <span>1 hour ago</span>
+          <span>45 events</span>
+        </div>
+      </div>
+      <div class="bg-[#111] border border-white/10 rounded-2xl p-6 hover:border-indigo-500/40 transition-all cursor-pointer group shadow-lg">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-500/10 text-gray-500">
+            <span class="font-bold text-lg">W</span>
+          </div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Paused</span>
+        </div>
+        <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">Airtable Row Update</h3>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500 font-medium">
+          <span>Yesterday</span>
+          <span>2 events</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#111] rounded-2xl border border-white/10 p-8 space-y-6">
+      <h3 class="text-lg font-bold text-white flex items-center gap-2">
+        <span class="text-indigo-400 font-bold">&#x2714;</span>
+        Security Verification (HMAC)
+      </h3>
+      <p class="text-gray-400 text-sm leading-relaxed max-w-2xl">
+        When receiving webhooks in your <span class="text-white font-medium">GitBash server</span>, always verify the signature sent by the provider. 
+        This prevents unauthorized users from spoofing events.
+      </p>
+      <div class="bg-black/40 border border-white/5 p-6 rounded-2xl relative">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-bold text-gray-500 uppercase tracking-widest">Node.js / Python Verification Snippet</span>
+        </div>
+        <pre class="text-[11px] code-font text-sky-400 leading-relaxed overflow-x-auto">
+const crypto = require('crypto');
+
+function verifySignature(payload, signature, secret) {
+  const hmac = crypto.createHmac('sha256', secret);
+  const digest = hmac.update(payload).digest('hex');
+  return signature === digest;
+}
+        </pre>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
